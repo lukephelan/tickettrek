@@ -11,4 +11,4 @@ const { data: events } = await useFetch('/api/events')
       {{ event.name }}
     </li>
   </ul>
-</template>npm
+</template>
