@@ -85,5 +85,19 @@ describe('EventList', () => {
         expect(useFetch).toHaveBeenCalledWith('/api/events', expect.any(Object), expect.any(String))
       })
     })
+
+    describe('search date range', () => {
+      beforeEach(async () => {
+        component.find('[data-name="start-date-time-input"]').setValue('2024-07-01')
+        component.find('[data-name="end-date-time-input"]').setValue('2024-08-01')
+        component.find('[data-name="search-btn"]').trigger('click')
+      })
+
+      it('has called useFetch', () => {
+        const componentParams = component.vm.params;
+        expect(componentParams).toEqual({ size: 10, page: 1, startDateTime: '2024-06-30T14:00:00Z', endDateTime: '2024-08-01T14:00:00Z' })
+        expect(useFetch).toHaveBeenCalledWith('/api/events', expect.any(Object), expect.any(String))
+      })
+    })
   })
 })

@@ -1,7 +1,5 @@
 <template>
-  <div class="bg-gradient-to-r from-dark-blue via-mid-blue to-dark-blue">
+  <div>
     <slot />
   </div>
 </template>
-
-
