@@ -9,7 +9,8 @@ export default defineNuxtConfig({
     },
   },
   modules: [
-    '@nuxt/test-utils/module'
+    '@nuxt/test-utils/module',
+    'nuxt-time'
   ],
   typescript: {
     typeCheck: true

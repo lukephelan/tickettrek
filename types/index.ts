@@ -1,10 +1,39 @@
 export { };
 
 declare global {
+  interface EventResponse {
+    _embedded: Embedded,
+    _links: Links
+  }
+
+  interface Embedded {
+    events: Event[];
+  }
+
+  interface Event {
+    id: string;
+    name: string;
+    dates: EventDates;
+    images: EventImage[];
+    place: EventPlace;
+    _embedded: EventEmbedded;
+  }
+
+  interface EventDates {
+    start: EventDate
+    end: EventDate
+    timezone: string;
+    status: EventStatus
+  }
+
   interface EventDate {
     localDate: string;
     dateTime: string;
     noSpecificTime: boolean;
+  }
+
+  interface EventStatus {
+    codee: EventStatusCode;
   }
 
   enum EventStatusCode {
@@ -13,17 +42,6 @@ declare global {
     Canceled = 'canceled',
     Postponed = 'postponed',
     Rescheduled = 'rescheduled'
-  }
-
-  interface EventStatus {
-    codee: EventStatusCode;
-  }
-
-  interface EventDates {
-    start: EventDate
-    end: EventDate
-    timezone: string;
-    status: EventStatus
   }
 
   interface EventImage {
@@ -35,21 +53,33 @@ declare global {
     attribution: string;
   }
 
-  interface Event {
-    id: string;
+  interface EventPlace {
     name: string;
-    dates: EventDates;
-    distance: number;
-    info: string;
-    pleaseNote: string;
-    images: EventImage[]
   }
 
-  interface Embedded {
+  interface EventEmbedded {
+    venues: Venue[];
+  }
+
+  interface Venue {
+    name: string;
+  }
+
+  interface Links {
+    first: Link;
+    prev: Link;
+    self: Link;
+    next: Link;
+    last: Link;
+  }
+
+  interface Link {
+    href: string;
+    templated: boolean;
+  }
+  
+  interface ReturnObject {
     events: Event[];
-  }
-
-  interface EventResponse {
-    _embedded: Embedded
+    links: Links
   }
 }

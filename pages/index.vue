@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center h-screen">
+  <div class="p-10">
     <EventList />
   </div>
 </template>
