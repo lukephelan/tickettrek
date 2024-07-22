@@ -38,4 +38,8 @@ Locally preview production build:
 npm run preview
 ```
 
-s
+### To-Do:
+
+- No results message
+- Filter by location
+- Error handling

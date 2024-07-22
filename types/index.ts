@@ -26,8 +26,14 @@ declare global {
     status: EventStatus
   }
 
+  interface EventTime {
+    hourOfDay: number;
+    minuteOfHour: number
+  }
+
   interface EventDate {
     localDate: string;
+    localTime: EventTime;
     dateTime: string;
     noSpecificTime: boolean;
   }
@@ -77,7 +83,7 @@ declare global {
     href: string;
     templated: boolean;
   }
-  
+
   interface ReturnObject {
     events: Event[];
     links: Links
