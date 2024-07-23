@@ -2,7 +2,6 @@
 import { DateTime } from 'luxon';
 import { ref, computed } from 'vue';
 
-
 function formatStartDateTime(dateString) {
   return DateTime.fromISO(dateString).toUTC().toISO({ includeOffset: false, suppressMilliseconds: true }) + 'Z';
 }
@@ -11,7 +10,6 @@ function formatEndDateTime(dateString) {
   return DateTime.fromISO(dateString).plus({ days: 1 })
     .startOf('day').toUTC().toISO({ includeOffset: false, suppressMilliseconds: true }) + 'Z';
 }
-
 
 const size = ref(10);
 const page = ref(1);
@@ -46,6 +44,7 @@ function onNavNext() {
   execute();
   window.scrollTo(0, 0);
 }
+
 function onNavPrev() {
   if (page.value > 1) {
     page.value--;
