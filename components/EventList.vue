@@ -15,15 +15,18 @@ function formatEndDateTime(dateString) {
 
 const size = ref(10);
 const page = ref(1);
+const selectedState = ref('')
 const startDateTime = ref('');
 const endDateTime = ref('');
 
+const selectedStateOption = ref('')
 const startDateTimeInput = ref('')
 const endDateTimeInput = ref('')
 
 const params = computed(() => ({
   size: size.value,
   page: page.value,
+  stateCode: selectedState.value,
   startDateTime: startDateTime.value ? formatStartDateTime(startDateTime.value) : undefined,
   endDateTime: endDateTime.value ? formatEndDateTime(endDateTime.value) : undefined,
 }))
@@ -53,8 +56,17 @@ function onNavPrev() {
 
 function onSearch() {
   page.value = 1;
+  selectedState.value = selectedStateOption.value;
   startDateTime.value = startDateTimeInput.value;
   endDateTime.value = endDateTimeInput.value;
+  execute();
+}
+
+function onClear() {
+  page.value = 1;
+  selectedState.value = '';
+  startDateTime.value = '';
+  endDateTime.value = '';
   execute();
 }
 
@@ -62,30 +74,28 @@ function onSearch() {
 
 <template>
   <div class="container m-auto text-light-gray w-100 xl:w-1/2">
-    <div class="w-100 flex justify-between items-end py-5">
-      <div>
-        Start date: <input type="date" v-model="startDateTimeInput" data-name="start-date-time-input"
-          class="block w-full px-3 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-500">
-      </div>
-      <div>
-        End date: <input type="date" v-model="endDateTimeInput" data-name="end-date-time-input"
-          class="block w-full px-3 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-500">
-      </div>
-      <div>
-        <button class="rounded bg-light-gray text-dark-blue p-2 w-24 md:w-40 hover:bg-torquoise shadow"
-          data-name="search-btn" @click="onSearch">Search</button>
-      </div>
+    <div class="flex flex-wrap items-end gap-2 py-5">
+      <LocationSelect v-model="selectedStateOption" data-name="location-select" />
+      <InputDate v-model="startDateTimeInput" label="Start date:" data-name="start-date-time-input" />
+      <InputDate v-model="endDateTimeInput" label="End date:" data-name="end-date-time-input" />
+      <button
+        class="rounded bg-white text-dark-blue hover:bg-mid-blue hover:text-white shadow-lg transition-all duration-300 p-2 h-12 w-24"
+        data-name="search-btn" @click="onSearch">Search</button>
+      <input type="reset"
+        class="rounded bg-white text-dark-blue hover:bg-mid-blue hover:text-white shadow-lg transition-all duration-300 p-2 h-12 w-24"
+        data-name="reset" @click="onClear" />
     </div>
     <div class="w-100 flex justify-between py-5">
       <div>
         <button v-if="hasPrev && page > 1"
-          class="rounded bg-light-gray text-dark-blue p-2 w-24 md:w-40 hover:bg-torquoise shadow" data-name="prev-btn"
-          @click="onNavPrev">
+          class="rounded bg-gradient-to-r from-gray-200 to-gray-300 text-dark-blue hover:from-mid-blue hover:to-blue hover:text-white shadow-lg transition-all duration-300 p-2 w-24 md:w-40"
+          data-name="prev-btn" @click="onNavPrev">
           Previous
         </button>
       </div>
       <div>
-        <button v-if="hasNext" class="rounded bg-light-gray text-dark-blue p-2 w-24 md:w-40 hover:bg-torquoise shadow"
+        <button v-if="hasNext"
+          class="rounded bg-gradient-to-r from-gray-200 to-gray-300 text-dark-blue hover:from-mid-blue hover:to-blue hover:text-white shadow-lg transition-all duration-300 p-2 w-24 md:w-40"
           :disabled="!hasNext" data-name="next-btn" @click="onNavNext">
           Next
         </button>
@@ -93,7 +103,9 @@ function onSearch() {
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
       <SkeletonEventCard v-if="status === 'pending'" v-for="index in 10" :key="index" />
-      <EventCard v-else v-for="event in data.events" :key="event.id" :event="event" />
+      <EventCard v-else-if="status === 'success' && data.events.length" v-for="event in data.events" :key="event.id"
+        :event="event" />
+      <div v-else>Sorry! There are no events.</div>
     </div>
   </div>
 </template>

@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-fixed bg-cover bg-center bg-gradient-to-r from-dark-blue via-mid-blue to-dark-blue;
+  }
+}
