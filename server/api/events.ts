@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
     apikey,
     sort: 'date,asc',
     countryCode: 'AU',
-    stateCode: 'VIC',
     ...queryParams,
   }
 

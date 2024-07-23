@@ -50,7 +50,7 @@ describe('EventList', () => {
 
     it('has called useFetch', () => {
       const componentParams = component.vm.params;
-      expect(componentParams).toEqual({ size: 10, page: 1 })
+      expect(componentParams).toEqual({ size: 10, page: 1, stateCode: '' })
       expect(useFetch).toHaveBeenCalledWith('/api/events', expect.any(Object), expect.any(String))
     })
     it('renders list', async () => {
@@ -67,7 +67,7 @@ describe('EventList', () => {
 
       it('has called useFetch', () => {
         const componentParams = component.vm.params;
-        expect(componentParams).toEqual({ size: 10, page: 2 })
+        expect(componentParams).toEqual({ size: 10, page: 2, stateCode: '' })
         expect(useFetch).toHaveBeenCalledWith('/api/events', expect.any(Object), expect.any(String))
       })
     })
@@ -81,21 +81,37 @@ describe('EventList', () => {
 
       it('has called useFetch', () => {
         const componentParams = component.vm.params;
-        expect(componentParams).toEqual({ size: 10, page: 3 })
+        expect(componentParams).toEqual({ size: 10, page: 3, stateCode: '' })
         expect(useFetch).toHaveBeenCalledWith('/api/events', expect.any(Object), expect.any(String))
       })
     })
 
-    describe('search date range', () => {
-      beforeEach(async () => {
-        component.find('[data-name="start-date-time-input"]').setValue('2024-07-01')
-        component.find('[data-name="end-date-time-input"]').setValue('2024-08-01')
+    describe('search by location amnd date range', () => {
+      beforeEach(() => {
+        component.find('[data-name="location-select"] select').setValue('VIC')
+        component.find('[data-name="start-date-time-input"] input').setValue('2024-07-01')
+        component.find('[data-name="end-date-time-input"] input').setValue('2024-08-01')
         component.find('[data-name="search-btn"]').trigger('click')
       })
 
       it('has called useFetch', () => {
         const componentParams = component.vm.params;
-        expect(componentParams).toEqual({ size: 10, page: 1, startDateTime: '2024-06-30T14:00:00Z', endDateTime: '2024-08-01T14:00:00Z' })
+        expect(componentParams).toEqual({ size: 10, page: 1, stateCode: 'VIC', startDateTime: '2024-06-30T14:00:00Z', endDateTime: '2024-08-01T14:00:00Z' })
+        expect(useFetch).toHaveBeenCalledWith('/api/events', expect.any(Object), expect.any(String))
+      })
+    })
+
+    describe('reset', () => {
+      beforeEach(() => {
+        component.find('[data-name="location-select"] select').setValue('VIC')
+        component.find('[data-name="start-date-time-input"] input').setValue('2024-07-01')
+        component.find('[data-name="end-date-time-input"] input').setValue('2024-08-01')
+        component.find('[data-name="reset"]').trigger('click')
+      })
+
+      it('has called useFetch with defaults', () => {
+        const componentParams = component.vm.params;
+        expect(componentParams).toEqual({ size: 10, page: 1, stateCode: '' })
         expect(useFetch).toHaveBeenCalledWith('/api/events', expect.any(Object), expect.any(String))
       })
     })
