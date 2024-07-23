@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 
-const { event } = defineProps(['event'])
+const { event } = defineProps({ event: { type: Object, required: true } });
 
 function getImageUrl(images) {
   const image = images.find(i => i.ratio === '16_9') || images[0];
@@ -11,7 +11,7 @@ function getImageUrl(images) {
 const timezone = computed(() => {
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   return timeZone;
-})
+});
 
 </script>
 
@@ -25,14 +25,26 @@ const timezone = computed(() => {
         {{ event._embedded?.venues[0].name }}
       </h3>
       <div class="font-light">
-        <NuxtTime v-if="event.dates.start.dateTime" :datetime="event.dates.start.dateTime" time-style='short'
-          date-style="full" :timezone="timezone" />
-        <NuxtTime v-else-if="event.dates.start.localDate" :datetime="event.dates.start.localDate" date-style="full"
-          :timezone="timezone" />
+        <NuxtTime
+          v-if="event.dates.start.dateTime"
+          :datetime="event.dates.start.dateTime"
+          time-style="short"
+          date-style="full"
+          :timezone="timezone"
+        />
+        <NuxtTime
+          v-else-if="event.dates.start.localDate"
+          :datetime="event.dates.start.localDate"
+          date-style="full"
+          :timezone="timezone"
+        />
       </div>
     </div>
     <div class="w-100 mt-5">
-      <img class="object-contain m-auto rounded-lg w-96" :src="getImageUrl(event.images)">
+      <img
+        class="object-contain m-auto rounded-lg w-96"
+        :src="getImageUrl(event.images)"
+      >
     </div>
   </div>
 </template>

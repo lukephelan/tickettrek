@@ -21,6 +21,7 @@ export default {
         'mid-blue': '#1f456e',
         'blue': '#385170',
         'light-blue': '#5C6978',
+        'soft-blue': '#8dc6ff',
         'mid-blue-green': '#0f5646',
         'dark-green': '#0b3d2e',
         'green': '#9fd3c7',
